@@ -5,5 +5,6 @@ test:
 
 install:
 	# symlink
+	ln -s ./bin/bop /usr/local/bin/bop
 
 .PHONY: test

@@ -1,11 +1,12 @@
 #!/usr/bin/env zsh
 
 # research
-/* set -e */
-/* set -E */
-/* set -T */
-/* set +e */
-/* set +E */
-/* set +T */
+# /* set -e */
+# /* set -E */
+# /* set -T */
+# /* set +e */
+# /* set +E */
+# /* set +T */
 
 # This will be the executable that runs the tests
+echo "This is being sourced from the shell correctly"
