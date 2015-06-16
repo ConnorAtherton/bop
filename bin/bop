@@ -10,3 +10,15 @@
 
 # This will be the executable that runs the tests
 echo "This is being sourced from the shell correctly"
+echo "This is the argument: ${1}"
+# source "$PWD/../bop.zsh"
+echo $BOP_ROOT
+echo "$0"
+echo "${0:A:h}"
+
+echo $dir
+# can't use dirname here because we want to resolve symlinks
+source "${dir}/bop.zsh"
+
+# source bop into the shell
+source ../bop.zsh

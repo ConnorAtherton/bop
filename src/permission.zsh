@@ -3,30 +3,34 @@
 #
 # Permissions
 #
-  # $1 is the file name
-  can_read() {
+# $1 is the file name
+function can_read {
   # $2 [optional] a specified user in the system or the user running the tests
 }
 
-can_write() {
-  # $1 is the file name
-  # $2 [optional] a specified user in the system or the user running the tests
-}
-
-can_execute() {
+function can_write {
   # $1 is the file name
   # $2 [optional] a specified user in the system or the user running the tests
 }
 
-has_permissions() {
+function can_execute {
   # $1 is the file name
   # $2 [optional] a specified user in the system or the user running the tests
 }
 
-has_permission_gt() {
+function has_permissions {
+  # $1 is the file name
+  # $2 [optional] a specified user in the system or the user running the tests
+}
+
+function has_permissions_gt {
 
 }
 
-has_permission_lt() {
+function has_permissions_lt {
 
+}
+
+function fetch_permissions {
+  # return permissions in a string format
 }

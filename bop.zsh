@@ -56,8 +56,7 @@ function suite {
   local suite_message="$1"
 
   if [ ! -z "$suite_message" ]; then
-    print_newline
-    success $suite_message true
+    success $suite_message
     _add_indent
   else
     _remove_indent
