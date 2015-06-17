@@ -7,18 +7,61 @@
 # /* set +e */
 # /* set +E */
 # /* set +T */
+#
+function version {
+  echo "1"
+}
 
-# This will be the executable that runs the tests
-echo "This is being sourced from the shell correctly"
-echo "This is the argument: ${1}"
-# source "$PWD/../bop.zsh"
-echo $BOP_ROOT
-echo "$0"
-echo "${0:A:h}"
+function help {
+  echo "printing help here"
+}
 
-echo $dir
-# can't use dirname here because we want to resolve symlinks
-source "${dir}/bop.zsh"
+#
+# Arg parsing taken from
+# https://github.com/sstephenson/bats/blob/master/libexec/bats
+#
+options=()
+arguments=()
 
-# source bop into the shell
-source ../bop.zsh
+for arg in "$@"; do
+  if [ "${arg:0:1}" = "-" ]; then
+    if [ "${arg:1:1}" = "-" ]; then
+      options[${#options[*]}]="${arg:2}"
+    else
+      index=1
+      while option="${arg:$index:1}"; do
+        [ -n "$option" ] || break
+        options[${#options[*]}]="$option"
+        let index+=1
+      done
+    fi
+  else
+    arguments[${#arguments[*]}]="$arg"
+  fi
+done
+
+for option in "${options[@]}"; do
+  case "$option" in
+  "h" | "help" )
+    help
+    exit 0
+    ;;
+  "v" | "version" )
+    version
+    exit 0
+    ;;
+  "t" | "tap" )
+    BOP_REPORTER="tap"
+    ;;
+  "f" | "formatter" )
+    BOP_REPORTER="simple"
+    ;;
+  * )
+    help >&2
+    exit 1
+    ;;
+  esac
+done
+
+echo "$arguments"
+echo "$options"

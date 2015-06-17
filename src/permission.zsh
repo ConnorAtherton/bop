@@ -3,34 +3,32 @@
 #
 # Permissions
 #
-# $1 is the file name
 function can_read {
+  # $1 is the file name
   # $2 [optional] a specified user in the system or the user running the tests
+  permissions=fetch_permissions $1
 }
 
 function can_write {
   # $1 is the file name
   # $2 [optional] a specified user in the system or the user running the tests
+  permissions=fetch_permissions $1
 }
 
 function can_execute {
   # $1 is the file name
   # $2 [optional] a specified user in the system or the user running the tests
-}
-
-function has_permissions {
-  # $1 is the file name
-  # $2 [optional] a specified user in the system or the user running the tests
+  permissions=fetch_permissions $1
 }
 
 function has_permissions_gt {
-
+  permissions=fetch_permissions $1
 }
 
 function has_permissions_lt {
-
+  permissions=fetch_permissions $1
 }
 
 function fetch_permissions {
-  # return permissions in a string format
+  stat -r $1 | awk '{ print $3 }'
 }

@@ -45,6 +45,7 @@ BOP_INDENT_AMOUNT=2
 
 BOP_LAST_TEST_RESULT=""
 BOP_LAST_TEST_MESSAGE=""
+BOP_STARTED_TEST_SUITE=0
 
 BOP_SETTING_QUIET=true
 BOP_SETTING_COLOR=true
@@ -56,9 +57,11 @@ function suite {
   local suite_message="$1"
 
   if [ ! -z "$suite_message" ]; then
+    BOP_STARTED_TEST_SUITE=1
     success $suite_message
     _add_indent
   else
+    BOP_STARTED_TEST_SUITE=0
     _remove_indent
   fi
 }
@@ -72,6 +75,13 @@ function describe {
   else
     _reset_test_status
   fi
+}
+
+function setup {
+}
+
+function teardown {
+
 }
 
 # private
