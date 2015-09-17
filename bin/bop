@@ -1,67 +1,91 @@
 #!/usr/bin/env zsh
 
-# research
+echo $BOP_ROOT
+
+#
+# Research
+#
 # /* set -e */
 # /* set -E */
 # /* set -T */
 # /* set +e */
 # /* set +E */
 # /* set +T */
+
 #
+# Cheatsheet
+#
+# $# - number of args passed to script.
+# $@ - stored a string of all the args passed in
+# $1..$n - args by position (split by space).
+# $? - last exit code of a command, a function, or the script.
+# $$ - holds the process id for the current script.
+
+# List storing path to test files
+local tests=()
+
 function version {
-  echo "1"
+  echo "0.0.1"
 }
 
-function help {
-  echo "printing help here"
+function usage {
+  cat <<EOF
+Usage: bop [arguments] [options]
+
+  -v, --version   Displays the latest bop version.
+  -s, --simple    Output results in a simple indented list.
+  -t, --tap       Output results in machine-readable TAP format.
+EOF
 }
 
+# if nothing is passed we will
+# default to showing help
+if [[ ! $# -gt 0 ]]; then
+  1="--help"
+fi
+
+if [[ $# -eq 0 ]]; then
+  usage && exit 0
+else
+  while [[ $# -gt 0 ]]; do
+    case $1 in
+    "-h" | "--help" | "-u" | "--usage" )
+      usage
+      exit 0
+      ;;
+    "-v" | "--version" )
+      version
+      exit 0
+      ;;
+    "-t" | "--tap" )
+      BOP_REPORTER="tap"
+      echo "tap reporter set"
+      ;;
+    "-s" | "--simple" )
+      BOP_REPORTER="simple"
+      echo "simple reporter set"
+      ;;
+    * )
+      # assume its a file and add it the *tests* list
+      tests=($tests $1)
+    esac
+    shift
+  done
+fi
+
+# Test if there is anything in the test list
 #
-# Arg parsing taken from
-# https://github.com/sstephenson/bats/blob/master/libexec/bats
-#
-options=()
-arguments=()
+# if [[ ]]; then
+#   echo "Bop needs to know what tests to run as arguments"
+#   exit 1
+# fi
 
-for arg in "$@"; do
-  if [ "${arg:0:1}" = "-" ]; then
-    if [ "${arg:1:1}" = "-" ]; then
-      options[${#options[*]}]="${arg:2}"
-    else
-      index=1
-      while option="${arg:$index:1}"; do
-        [ -n "$option" ] || break
-        options[${#options[*]}]="$option"
-        let index+=1
-      done
-    fi
-  else
-    arguments[${#arguments[*]}]="$arg"
-  fi
-done
+echo "tests - ${tests}"
+echo $BOP_ROOT
 
-for option in "${options[@]}"; do
-  case "$option" in
-  "h" | "help" )
-    help
-    exit 0
-    ;;
-  "v" | "version" )
-    version
-    exit 0
-    ;;
-  "t" | "tap" )
-    BOP_REPORTER="tap"
-    ;;
-  "f" | "formatter" )
-    BOP_REPORTER="simple"
-    ;;
-  * )
-    help >&2
-    exit 1
-    ;;
-  esac
-done
+# Source the bop internal functions into the
+# shell so they are accesible to the tests
+# TODO find how to export this so other shells can access
+# source "${BOP_ROOT}/src/bop.zsh"
 
-echo "$arguments"
-echo "$options"
+exit 0

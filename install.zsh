@@ -11,4 +11,4 @@ chmod 755 $BOP_SYMLINK_PATH
 
 # export these so we can easily source other scripts
 # from sub shells
-export BOP_ROOT
+export BOP_ROOT="$BOP_ROOT"
